@@ -15,7 +15,15 @@ EcoWheels is a web application project focused on sustainable transportation sol
 
 ## About the Project
 
-EcoWheels is designed to provide eco-friendly transport options through an interactive web platform. Users can explore sustainable transportation choices, such as electric bikes or car-sharing services, and manage various functionalities through the provided admin interface.
+EcoWheels is an innovative mobile application designed to transform the public transport landscape of Mumbai into a more sustainable and eco-friendly system. Our app empowers users to make greener travel choices while enhancing their commuting experience through the following key features:
+
+Trip Planner: EcoWheels offers a comprehensive trip planning feature that identifies eco-friendly travel routes. Users can easily calculate distances and assess the carbon footprint of their journeys. The app also suggests nearby bus stops, metro stations, and other public transport options, helping users make informed decisions for a more sustainable commute.
+
+Environmental Impact Chart: Stay informed about your travel habits with our detailed chart that displays average fuel consumption and carbon footprints. Users can track their progress towards greener travel and understand the positive impact of their choices on the environment.
+
+Community Chatroom: Connect with like-minded individuals in our public chatroom where users can discuss and organize carpools. This feature fosters a sense of community, encouraging collaborative efforts to reduce the number of vehicles on the road and promote shared transportation options.
+
+With EcoWheels, you’re not just traveling; you’re contributing to a cleaner, greener Mumbai. Join us on our mission to revolutionize public transport and make a positive impact on our environment!
 
 ## Getting Started
 
