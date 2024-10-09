@@ -364,8 +364,33 @@ def redeem(request):
 def leaderboard(request):
     return render (request,'main/leaderboard.html')
 
-def carpooling(request):
-    return render (request,'main/carpooling.html')
+# views.py
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import ChatMessage
+from .forms import ChatForm
+
+@login_required
+def carpooling_chat(request):
+    if request.method == 'POST':
+        form = ChatForm(request.POST)
+        if form.is_valid():
+            message = form.cleaned_data['message']
+            ChatMessage.objects.create(user=request.user, message=message)
+            return redirect('carpooling_chat')  # Reload the page to show the new message
+    else:
+        form = ChatForm()
+
+    # Get all chat messages
+    messages = ChatMessage.objects.order_by('-timestamp')  # Show newest messages first
+
+    context = {
+        'form': form,
+        'messages': messages
+    }
+    return render(request, 'main/carpooling.html', context)
+
 
 def tips(request):
     return render (request,'main/tips.html')
+

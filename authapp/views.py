@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .models import UserProfile
+from .models import UserProfile,Friendship
 import re
 import uuid
 from .utils import send_email_to_client
@@ -135,9 +135,24 @@ def view_profile(request, user_id):
     user = get_object_or_404(User, id=user_id)
     profile, created = UserProfile.objects.get_or_create(user=user)
     
+    # Fetch received friend requests
+    received_requests = Friendship.objects.filter(to_user=request.user, accepted=False)
+    
+    # Fetch friends of the logged-in user
+    friends_from_user = Friendship.objects.filter(from_user=request.user, accepted=True).values_list('to_user', flat=True)
+    friends_to_user = Friendship.objects.filter(to_user=request.user, accepted=True).values_list('from_user', flat=True)
+    
+    # Combine both lists to get all friends
+    friends_ids = set(friends_from_user) | set(friends_to_user)
+    
+    # Fetch friend profiles
+    friends = User.objects.filter(id__in=friends_ids).select_related('userprofile')
+    
     context = {
         'user': user,
         'profile': profile,
+        'received_requests': received_requests,
+        'friends': friends,
     }
     
     return render(request, 'auth/view_profile.html', context)
@@ -197,3 +212,70 @@ def update_avatar(request):
             return JsonResponse({'success': False, 'message': 'No avatar ID provided.'})
 
     return JsonResponse({'success': False, 'message': 'Invalid request method.'})
+
+@login_required(login_url='login')
+def add_friend(request, user_id):
+    user_to_add = get_object_or_404(User, id=user_id)
+    if user_to_add == request.user:
+        messages.error(request, "You cannot send a friend request to yourself.")
+        return redirect('friends_list')
+    
+    friendship, created = Friendship.objects.get_or_create(from_user=request.user, to_user=user_to_add)
+    if created:
+        messages.success(request, f'Friend request sent to {user_to_add.username}.')
+    else:
+        messages.info(request, f'You have already sent a friend request to {user_to_add.username}.')
+    
+    return redirect('friends_list')
+
+@login_required(login_url='login')
+def accept_request(request, request_id):
+    friendship = get_object_or_404(Friendship, id=request_id)
+    if friendship.to_user == request.user:
+        friendship.accepted = True
+        friendship.save()
+        messages.success(request, f'You are now friends with {friendship.from_user.username}.')
+    else:
+        messages.error(request, 'You are not authorized to accept this friend request.')
+    return redirect('view_profile', user_id=request.user.id)
+
+@login_required(login_url='login')
+def decline_request(request, request_id):
+    friendship = get_object_or_404(Friendship, id=request_id)
+    if friendship.to_user == request.user:
+        friendship.delete()
+        messages.success(request, f'You have declined the friend request from {friendship.from_user.username}.')
+    else:
+        messages.error(request, 'You are not authorized to decline this friend request.')
+    return redirect('view_profile', user_id=request.user.id)
+
+
+@login_required(login_url='login')
+def friends_list(request):
+    users = User.objects.exclude(id=request.user.id)
+    
+    sent_requests = Friendship.objects.filter(from_user=request.user).values_list('to_user', flat=True)
+    
+    friends_from_user = Friendship.objects.filter(from_user=request.user, accepted=True).values_list('to_user', flat=True)
+    friends_to_user = Friendship.objects.filter(to_user=request.user, accepted=True).values_list('from_user', flat=True)
+    friends = set(friends_from_user) | set(friends_to_user)
+    users = users.exclude(id__in=friends)
+    
+    return render(request, 'auth/friends_list.html', {
+        'users': users,
+        'sent_requests': sent_requests
+    })
+
+@login_required(login_url='login')
+def search_users(request):
+    query = request.GET.get('q')
+    if query:
+        users = User.objects.filter(username__icontains=query)
+    else:
+        users = User.objects.none()
+    
+    context = {
+        'users': users,
+        'query': query,
+    }
+    return render(request, 'auth/search_results.html', context)
