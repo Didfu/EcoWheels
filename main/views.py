@@ -22,6 +22,9 @@ from .models import Chat
 import google.generativeai as genai
 import os
 from django.http import JsonResponse
+from adminapp.models import Feedback,Store
+from adminapp.forms import FeedbackForm
+import logging
 
 API_KEY_GEMINI =settings.GEMINI
 OLAMAPS_API = settings.OLAMAPS
@@ -202,6 +205,8 @@ def logtrip(request):
 @csrf_exempt
 @login_required(login_url='/login/')
 def process_form(request):
+    logger = logging.getLogger(__name__)  # Initialize logger
+
     if request.method == 'POST':
         user = request.user
         search_date = date.today()
@@ -216,6 +221,7 @@ def process_form(request):
 
         if source_lat and source_lng and dest_lat and dest_lng:
             try:
+    # Prepare parameters for the OLA Maps API request
                 params = {
                     'origin': f'{source_lat},{source_lng}',
                     'destination': f'{dest_lat},{dest_lng}',
@@ -227,80 +233,133 @@ def process_form(request):
                     'traffic_metadata': 'true',
                     'api_key': OLAMAPS_API
                 }
+                
+                # Make the API request
                 response = requests.post('https://api.olamaps.io/routing/v1/directions', params=params)
 
+                # Check if the response is successful
                 if response.status_code == 200:
                     data = response.json()
-                    legs = data['routes'][0]['legs']
-                    total_distance = sum(leg['distance'] for leg in legs) / 1000  # Convert to km
-                    total_duration = sum(leg['duration'] for leg in legs) / 60  # Convert to minutes
-                    total_distance = round(total_distance, 2)
-                    total_duration = round(total_duration, 2)
-                    list_of_transport = {
-    "Bus": 50,                         # Conventional bus
-    "Electric Bus": 10,                # Electric bus (estimated)
-    "AC Bus": 80,                      # AC bus
-    "Electric AC Bus": 10,             # Electric AC bus (estimated)
-    "Train": 41,                       # Conventional train
-    "Electric Train": 10,              # Electric train (estimated)
-    "AC Train": 50,                    # AC train
-    "Electric AC Train": 10,           # Electric AC train (estimated)
-    "Car 1 Passenger": 128,            # Car (1 passenger)
-    "Electric Car 1 Passenger": 20,    # Electric car (1 passenger)
-    "Car 2 Passenger": 64,             # Car (2 passengers)
-    "Electric Car 2 Passenger": 20,    # Electric car (2 passengers)
-    "Car 3 Passenger": 48,             # Car (3 passengers)
-    "Electric Car 3 Passenger": 20,    # Electric car (3 passengers)
-    "Car 4 Passenger": 32,             # Car (4 passengers)
-    "Electric Car 4 Passenger": 20,    # Electric car (4 passengers)
-    "Bike 1 Passenger": 50,            # Bicycle
-    "Electric Bike 1 Passenger": 20,   # Electric bicycle
-    "Bike 2 Passenger": 40,            # Bicycle (2 passengers)
-    "Electric Bike 2 Passenger": 20,   # Electric bicycle (2 passengers)
-    "Rickshaw 1 Passenger": 100,       # Rickshaw (1 passenger)
-    "Electric Rickshaw 1 Passenger": 10, # Electric rickshaw (1 passenger)
-    "Rickshaw 2 Passenger": 80,        # Rickshaw (2 passengers)
-    "Electric Rickshaw 2 Passenger": 10, # Electric rickshaw (2 passengers)
-    "Rickshaw 3 Passenger": 70,        # Rickshaw (3 passengers)
-    "Electric Rickshaw 3 Passenger": 10, # Electric rickshaw (3 passengers)
-    "Scooter 1 Passenger": 50,         # Scooter (1 passenger)
-    "Electric Scooter 1 Passenger": 20, # Electric scooter (1 passenger)
-    "Scooter 2 Passenger": 40,         # Scooter (2 passengers)
-    "Electric Scooter 2 Passenger": 20, # Electric scooter (2 passengers)
-    "Walk": 0,                         # Walking
-    "Bicycle": 0                       # Bicycle
-}
+                    logger.debug("Routing API Response Data: {}".format(data))
 
-                    # Calculate carbon footprint and round to 2 decimal places
-                    carbon_footprint_perkm = {mode: round(value * total_distance, 2) for mode, value in list_of_transport.items()}
-                    
-                    # Save the trip data to the database
-                    Chat.objects.create(
-                        user=user,
-                        source_lat=source_lat,
-                        source_lng=source_lng,
-                        dest_lat=dest_lat,
-                        dest_lng=dest_lng,
-                        source_address=source_add,
-                        destination_address=dest_add,
-                        search_date=search_date,
-                        search_time=search_time,
-                        distance=total_distance,
-                        duration=total_duration,
-                        carbon_footprint=carbon_footprint_perkm
-                    )
+                    # Check for expected structure in the response
+                    if 'routes' in data and data['routes']:
+                        legs = data['routes'][0]['legs']
+                        total_distance = sum(leg['distance'] for leg in legs) / 1000  # Convert to km
+                        total_duration = sum(leg['duration'] for leg in legs) / 60  # Convert to minutes
+                        total_distance = round(total_distance, 2)
+                        total_duration = round(total_duration, 2)
+
+                        # Transport types and their CO2 emissions
+                        list_of_transport = {
+                            "Bus": 50,
+                            "Electric Bus": 10,
+                            "AC Bus": 80,
+                            "Electric AC Bus": 10,
+                            "Train": 41,
+                            "Electric Train": 10,
+                            "AC Train": 50,
+                            "Electric AC Train": 10,
+                            "Car 1 Passenger": 128,
+                            "Electric Car 1 Passenger": 20,
+                            "Car 2 Passenger": 64,
+                            "Electric Car 2 Passenger": 20,
+                            "Car 3 Passenger": 48,
+                            "Electric Car 3 Passenger": 20,
+                            "Car 4 Passenger": 32,
+                            "Electric Car 4 Passenger": 20,
+                            "Bike 1 Passenger": 50,
+                            "Electric Bike 1 Passenger": 20,
+                            "Bike 2 Passenger": 40,
+                            "Electric Bike 2 Passenger": 20,
+                            "Rickshaw 1 Passenger": 100,
+                            "Electric Rickshaw 1 Passenger": 10,
+                            "Rickshaw 2 Passenger": 80,
+                            "Electric Rickshaw 2 Passenger": 10,
+                            "Rickshaw 3 Passenger": 70,
+                            "Electric Rickshaw 3 Passenger": 10,
+                            "Scooter 1 Passenger": 50,
+                            "Electric Scooter 1 Passenger": 20,
+                            "Scooter 2 Passenger": 40,
+                            "Electric Scooter 2 Passenger": 20,
+                            "Walk": 0,
+                            "Bicycle": 0
+                        }
+
+                        # Calculate carbon footprint per km
+                        carbon_footprint_perkm = {mode: round(value * total_distance, 2) for mode, value in list_of_transport.items()}
+
+                        # Nearby places search
+                        url = 'https://api.olamaps.io/places/v1/textsearch'
+                        params = {
+                            'input': 'Bus Stops and Police Stations Near Me',
+                            'location': f'{source_lat},{source_lng}',
+                            'radius': 700,
+                            'types': 'bus_stations,police_stations',
+                            'size': 50,
+                            'api_key': 'EGIkvI0u0WqphaawioDNxdDf9BLvOQ6ATAqDY3em'
+                        }
+
+                        headers = {
+                            'accept': 'application/json',
+                            'Authorization': 'Bearer YOUR_AUTH_TOKEN'
+                        }
+
+                        nearby_response = requests.get(url, headers=headers, params=params)
+
+                        if nearby_response.status_code == 200:
+                            nearby_data = nearby_response.json()
+                            logger.debug("Nearby Places API Response Data: {}".format(nearby_data))
+
+                            nearby_bus_stops = []
+
+                            # Check for the correct key based on the API response
+                            if 'predictions' in nearby_data:
+                                for place in nearby_data['predictions']:
+                                    nearby_bus_stops.append(place.get('name', 'Unknown Place'))
+                            else:
+                                logger.warning("No predictions found in nearby data response.")
+
+                            # Join the list into a comma-separated string
+                            nearby_bus_stops_str = ', '.join(nearby_bus_stops)
+
+                            # Save the trip data to the database, including nearby bus stops
+                            chat_entry = Chat.objects.create(
+                                user=user,
+                                source_lat=source_lat,
+                                source_lng=source_lng,
+                                dest_lat=dest_lat,
+                                dest_lng=dest_lng,
+                                source_address=source_add,
+                                destination_address=dest_add,
+                                search_date=search_date,
+                                search_time=search_time,
+                                distance=total_distance,
+                                duration=total_duration,
+                                carbon_footprint=carbon_footprint_perkm,
+                                Nearby_Bus_Stops=nearby_bus_stops_str  # Store the bus stop names as a comma-separated string
+                            )
+                            return redirect('home')
+                        else:
+                            logger.error(f"Error fetching nearby places: {nearby_response.status_code} - {nearby_response.text}")
+                            return redirect('home')
+                    else:
+                        logger.error("Unexpected response structure: {}".format(data))
+                        return redirect('home')
+                else:
+                    logger.error(f"Error fetching directions: {response.status_code} - {response.text}")
+                    return redirect('home')
             except Exception as e:
-                # Log the exception (optional)
-                print(f"Error occurred: {e}")
-            
-        # After success or failure, always redirect to 'mappage'
-        return redirect('home')
+                logger.exception("An error occurred: {}".format(e))
+                return redirect('home')   
+    return redirect('home')   
+
 
 @login_required(login_url='/login/')
 def home(request):
     user = request.user
     # Fetch the latest 5 chats
-    chats = Chat.objects.filter(user=user).order_by('-search_date', '-search_time')[:5]
+    chats = Chat.objects.filter(user=user).order_by('-search_date', '-search_time')
 
     today = datetime.now().date()
 
@@ -693,4 +752,35 @@ def tips(request):
     return render (request,'main/tips.html')
 
     
+@login_required(login_url='/login/')
+def redeem(request):
+    user = request.user
+    coin_balance = 0  # Default value if no profile is found
 
+    # Retrieve the user's coin balance from the database if available
+    try:
+        user_profile = UserProfile.objects.get(user=user)
+        coin_balance = user_profile.coins  # Fetch user's coin balance
+        print(f"[DEBUG] Retrieved coin balance: {coin_balance} for user: {user.username}")
+    except UserProfile.DoesNotExist:
+        coin_balance = 0  # If user profile does not exist, set to 0
+        print(f"[DEBUG] UserProfile does not exist for user: {user.username}")
+
+    stores = Store.objects.all()  
+    return render(request, 'main/redeem.html', {'coin_balance': coin_balance,'stores': stores})
+
+
+def submit_feedback(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            feedback = form.save(commit=False)
+            # Use the logged-in user's username or user object (if linking through a ForeignKey)
+            feedback.name = request.user  # Assuming the Feedback model has a ForeignKey to User
+            feedback.submitted_at = timezone.now()  # Save current UTC time
+            feedback.save()
+            return redirect('redeem')  # Redirect to the redeem page
+    else:
+        form = FeedbackForm()
+
+    return render(request, 'main/redeem.html', {'form': form})

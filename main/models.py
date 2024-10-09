@@ -35,7 +35,7 @@ class Chat(models.Model):
     distance = models.FloatField()
     duration = models.FloatField()
     carbon_footprint = models.JSONField()  # Store carbon footprint data in JSON format
-
+    Nearby_Bus_Stops = models.CharField(max_length=300)
     def __str__(self):
         return f"Trip from {self.source_address} to {self.destination_address} on {self.search_date}"
     

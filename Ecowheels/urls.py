@@ -34,6 +34,7 @@ main = [
     path('tips/', mviews.tips,name='tips'),
      path('process_form/',mviews.process_form,name='process_form'),
      path('get-personalized-recommendations/', mviews.get_personalized_recommendations, name='get_personalized_recommendations'),
+     path('submit_feedback/',mviews.submit_feedback,name='submit_feedback'),
 
 ]
 
