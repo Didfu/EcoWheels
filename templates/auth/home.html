@@ -16,8 +16,7 @@
     }
     .navbar {
       z-index: 10; /* Ensure navbar is on top */
-      background: rgba(255, 255, 255, 0.57); /* Transparent background */
-      border-bottom: 2px solid rgba(255, 255, 255, 0.5); /* Optional bottom border */
+      background: rgba(65, 72, 68, 0.57); /* Transparent background */
       position: sticky;
       top: 0;
       z-index: 1000; 
@@ -29,7 +28,7 @@
       font-size: 2.5rem; /* Adjust the brand text size */
       text-transform: uppercase; /* Uppercase text for the brand */
       letter-spacing: 2px; /* Increase spacing between letters */
-      color: #2e7d32; /* Change the brand color */
+      color: #66bb6a; /* Change the brand color */
       font-weight: 600; /* Bold font */
       transition: color 0.3s ease; /* Smooth transition on hover */
     }
@@ -38,14 +37,14 @@
       margin-right: 10px; /* Space between logo and text */
     }
     .navbar-brand:hover {
-      color: #66bb6a; /* Hover effect for brand */
+      color: #2e7d32; /* Hover effect for brand */
       text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Add text shadow on hover */
     }
     .nav-link {
       text-transform: capitalize; /* Capitalize first letter of each word */
       letter-spacing: 1.5px; /* Adjust spacing for a clean look */
       font-size: 1.2rem; /* Adjust size of links */
-      color: #000; /* Change link text color */
+      color: #ffffff; /* Change link text color */
       transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transition */
       padding: 10px 20px; /* Add padding to links */
     }
@@ -53,32 +52,11 @@
       filter: invert(1); /* Invert the color of the toggle icon */
     }
     .nav-link:hover {
-      color: #81c784; /* Color change on hover */
-      background-color: rgba(0, 0, 0, 0.1); /* Background change on hover */
-      border-radius: 4px; /* Add border-radius to links */
+      color: #8def92; /* Color change on hover */
+      background-color: rgba(0, 0, 0, 0.4); /* Background change on hover */
+      border-radius: 10px; /* Add border-radius to links */
     }
-    .section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    height: 70vh; /* Full height for each section */
-    padding: 2px;
-    background-color: rgba(255, 255, 255, 0.9); /* Background color for visibility */
-    backdrop-filter: blur(10px); /* Optional blur effect */
-    border-radius: 20px; /* Rounded corners */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Shadow for depth */
-}
 
-.vision, .mission {
-    font-weight: bold; /* Bold text for titles */
-    font-size: 1.5rem; /* Increase font size */
-    padding: 20px; /* Add padding for spacing */
-    border: 2px solid #4caf50; /* Border */
-    border-radius: 10px; /* Rounded corners */
-    background-color: rgba(208, 253, 212, 0.9); /* Background color with transparency */
-    margin: 10px; /* Spacing between sections */
-}
 
 h1 {
     margin-bottom: 20px; /* Space below the title */
@@ -86,15 +64,105 @@ h1 {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
-ul {
-    list-style-type: none; /* Remove default list styling */
-    padding: 0; /* Remove default padding */
+
+#about1 {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space out items */
+    align-items: center; /* Center items vertically */
+    padding: 40px; /* Add padding around the section */
+    background-image: linear-gradient(to right, #66bb6a, #f4f4f4); /* Gradient background */
 }
 
-li {
-    font-size: 1.2rem; /* Adjust size of list items */
-    margin: 10px 0; /* Spacing between list items */
-    color: #333; /* Text color for list items */
+.vision {
+    flex: 0 0 50%; /* Fixed width of 45% for the vision section */
+    margin-right: 20px; /* Space between text and image */
+    padding: 20px; /* Padding inside the vision section */
+}
+
+.vision h1 {
+    padding-left: 200px; /* Indent the heading */
+    font-size: 3rem; /* Size of the heading */
+    font-weight: bold; /* Bold text */
+    margin-bottom: 20px; /* Space below the heading */
+}
+
+.vision ul {
+    font-size: 1.2rem; /* Adjust size of list items for readability */
+    padding-left: 20px; /* Indent the list items for better alignment */
+    line-height: 1.6; /* Increase line height for better readability */
+    list-style-type: disc; /* Use bullet points */
+    padding-left: 20px; /* Indent the list */
+    margin: 0; /* Remove default margin */
+}
+
+.vision ul li {
+    font-size: 1.2rem; /* Font size for better readability */
+    line-height: 1.6; /* Increase line height for spacing between lines */
+    margin-bottom: 10px; /* Space between list items */
+    text-align: left; /* Align text to the left */
+}
+
+.image-side {
+    flex: 0 0 45%; /* Fixed width of 45% for the image section */
+    display: flex; /* Use flexbox for centering the image */
+    justify-content: center; /* Center the image horizontally */
+    align-items: center; /* Center the image vertically */
+}
+
+.image {
+    max-width: 80%; /* Adjust this value as needed */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 100px; /* Rounded corners for the image */
+}
+
+#about2 {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space out items */
+    align-items: center; /* Center items vertically */
+    padding: 40px; /* Add padding around the section */
+    background-image: linear-gradient(to right, #f4f4f4, #66bb6a); /* Gradient background */
+}
+
+.mission {
+    flex: 0 0 50%; /* Fixed width of 45% for the vision section */
+    margin-right: 20px; /* Space between text and image */
+    padding: 20px; /* Padding inside the vision section */
+}
+
+.mission h1 {
+    padding-left: 200px; /* Indent the heading */
+    font-size: 3rem; /* Size of the heading */
+    font-weight: bold; /* Bold text */
+    margin-bottom: 20px; /* Space below the heading */
+}
+
+.mission ul {
+    font-size: 1.2rem; /* Adjust size of list items for readability */
+    padding-left: 20px; /* Indent the list items for better alignment */
+    line-height: 1.6; /* Increase line height for better readability */
+    list-style-type: disc; /* Use bullet points */
+    padding-left: 20px; /* Indent the list */
+    margin: 0; /* Remove default margin */
+}.accordion-body
+
+.mission ul li {
+    font-size: 1.2rem; /* Font size for better readability */
+    line-height: 1.6; /* Increase line height for spacing between lines */
+    margin-bottom: 10px; /* Space between list items */
+    text-align: left; /* Align text to the left */
+}
+
+.image {
+    flex: 0 0 45%; /* Fixed width of 45% for the image section */
+    display: flex; /* Use flexbox for centering the image */
+    justify-content: center; /* Center the image horizontally */
+    align-items: center; /* Center the image vertically */
+}
+
+.image {
+    max-width: 80%; /* Adjust this value as needed */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 70px; /* Rounded corners for the image */
 }
 
 @media (max-width: 768px) {
@@ -105,7 +173,7 @@ li {
 }
 
     #about {
-      background-color: #cbe2f2;
+      background-color: rgba(0, 0, 0, 0.7);
     }
     #faq {
       background-color: #e9ecef;
@@ -115,7 +183,7 @@ li {
       font-size: 2rem;
       margin-bottom: 40px;
       color: #4caf50; /* Header color */
-      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Subtle shadow */
     }
     .accordion-item {
       border: 1px solid #4caf50; /* Border for accordion items */
@@ -157,23 +225,7 @@ li {
       height: auto;
       transform: translate(-50%, -50%);
     }
-    .vision, .mission {
-      font-weight: bold; /* Bold text */
-      font-size: 1.5rem; /* Increase font size */
-      font-style: italic; /* Italic font */
-      padding: 20px; /* Add padding */
-      border: 2px solid #4caf50; /* Border */
-      border-radius: 8px; /* Rounded corners */
-      background-color: #d0ffd4; /* Background color */
-      margin: 10px; /* Spacing */
-      transition: transform 0.3s; /* Transition for hover effect */
-    }
-    .vision:hover, .mission:hover {
-      transform: scale(1.05); /* Slightly enlarge on hover */
-    }
-    .vision ul, .mission ul {
-      font-size: 1.9rem; /* Increase size of list items */
-    }
+    
     .overlay-text {
       position: absolute;
       top: 50%; /* Center vertically */
@@ -182,12 +234,16 @@ li {
       color: #ffffff; /* Text color */
       text-align: center; /* Center text alignment */
       z-index: 10; /* Ensure it's above the video */
-    }
+      background-color: rgba(0, 0, 0, 0.3);
+      }
 
     .overlay-text h1 {
       font-size: 3rem; /* Main title size */
       font-weight: bold;
       margin: 0; /* Remove default margin */
+    }
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.7);
     }
 
     .overlay-text p {
@@ -205,17 +261,17 @@ li {
       <source src="{% static 'images/Eco1.mp4' %}" type="video/mp4">
       Your browser does not support the video tag.
     </video>
-    
+    <div class="overlay">
     <!-- Text Overlays -->
     <div class="overlay-text">
       <h1>Welcome to EcoWheels!!</h1>
       <h3>Your journey to sustainable travel starts here.</h3>
     </div>
-  
+  </div>
     <!-- Navbar Overlay -->
 
     <!-- Navbar Overlay -->
-     <div class="header">
+    <div class="header">
     <nav class="navbar navbar-expand-lg">
       <div class="container">
         <a class="navbar-brand" href="#">
@@ -243,33 +299,33 @@ li {
     
   </div>
 
-  <div class="section" id="about">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="vision">
-                    <h1>Vision</h1>
-                    <ul>
-                        <li>To create a sustainable future where every individual can effortlessly minimize their carbon footprint through informed travel choices.</li>
-                        <li>To foster a community that prioritizes eco-friendly travel options and actively contributes to environmental preservation.</li>
-                        <li>To inspire innovation in sustainable transportation solutions that reduce emissions and promote cleaner air.</li>
-                        <li>To enhance accessibility to sustainable travel resources for all demographics, ensuring that everyone can participate in eco-conscious choices.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="mission">
-                    <h1>Mission</h1>
-                    <ul>
-                        <li>To empower individuals with innovative tools and resources that track their daily travel and promote eco-friendly alternatives.</li>
-                        <li>To provide education and awareness on the impacts of travel choices on the environment.</li>
-                        <li>To collaborate with local communities and organizations to promote sustainable travel initiatives.</li>
-                        <li>To drive meaningful change in our collective environmental impact by making sustainable travel accessible and appealing.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+  <div class="section" id="about1">
+    <div class="vision">
+        <h1>Vision</h1>
+        <ul>
+            <li>To create a sustainable future where every individual can effortlessly minimize their carbon footprint through informed travel choices.</li>
+            <li>To foster a community that prioritizes eco-friendly travel options and actively contributes to environmental preservation.</li>
+            <li>To inspire innovation in sustainable transportation solutions that reduce emissions and promote cleaner air.</li>
+            <li>To enhance accessibility to sustainable travel resources for all demographics, ensuring that everyone can participate in eco-conscious choices.</li>
+        </ul>
     </div>
+    <div class="image-side">
+        <img src="{% static 'images/vision.jpg' %}" alt="Sustainable Travel" class="image" />
+    </div>
+</div>
+<div class="section" id="about2">
+  <div class="image">
+    <img src="{% static 'images/mission.webp' %}" alt="Sustainable Travel" class="image" />
+  </div>
+  <div class="mission">
+  <h1>Mission</h1>
+      <ul>
+          <li>To create a sustainable future where every individual can effortlessly minimize their carbon footprint through informed travel choices.</li>
+          <li>To foster a community that prioritizes eco-friendly travel options and actively contributes to environmental preservation.</li>
+          <li>To inspire innovation in sustainable transportation solutions that reduce emissions and promote cleaner air.</li>
+          <li>To enhance accessibility to sustainable travel resources for all demographics, ensuring that everyone can participate in eco-conscious choices.</li>
+      </ul>
+  </div>
 </div>
 
       
