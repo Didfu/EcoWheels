@@ -16,11 +16,12 @@
     }
     .navbar {
       z-index: 10; /* Ensure navbar is on top */
-      background: rgba(255, 255, 255, 0.7); /* Transparent background */
+      background: rgba(255, 255, 255, 0.57); /* Transparent background */
       border-bottom: 2px solid rgba(255, 255, 255, 0.5); /* Optional bottom border */
       position: sticky;
       top: 0;
       z-index: 1000; 
+      backdrop-filter: blur(3px);
     }
     .navbar-brand {
       display: flex;
@@ -57,13 +58,52 @@
       border-radius: 4px; /* Add border-radius to links */
     }
     .section {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      height: 100vh; /* Full height for each section */
-      padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 70vh; /* Full height for each section */
+    padding: 2px;
+    background-color: rgba(255, 255, 255, 0.9); /* Background color for visibility */
+    backdrop-filter: blur(10px); /* Optional blur effect */
+    border-radius: 20px; /* Rounded corners */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+.vision, .mission {
+    font-weight: bold; /* Bold text for titles */
+    font-size: 1.5rem; /* Increase font size */
+    padding: 20px; /* Add padding for spacing */
+    border: 2px solid #4caf50; /* Border */
+    border-radius: 10px; /* Rounded corners */
+    background-color: rgba(208, 253, 212, 0.9); /* Background color with transparency */
+    margin: 10px; /* Spacing between sections */
+}
+
+h1 {
+    margin-bottom: 20px; /* Space below the title */
+    color: #4caf50; /* Title color */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+ul {
+    list-style-type: none; /* Remove default list styling */
+    padding: 0; /* Remove default padding */
+}
+
+li {
+    font-size: 1.2rem; /* Adjust size of list items */
+    margin: 10px 0; /* Spacing between list items */
+    color: #333; /* Text color for list items */
+}
+
+@media (max-width: 768px) {
+    .section {
+        flex-direction: column; /* Stack items on smaller screens */
+        height: auto; /* Allow height to adjust */
     }
+}
+
     #about {
       background-color: #cbe2f2;
     }
@@ -175,6 +215,7 @@
     <!-- Navbar Overlay -->
 
     <!-- Navbar Overlay -->
+     <div class="header">
     <nav class="navbar navbar-expand-lg">
       <div class="container">
         <a class="navbar-brand" href="#">
@@ -198,32 +239,39 @@
         </div>
       </div>
     </nav>
+  </div>
     
   </div>
 
   <div class="section" id="about">
     <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <div class="vision"><h1>Vision</h1>
-            <li >To create a sustainable future where every individual can effortlessly minimize their carbon footprint through informed travel choices.</li>
-            <li >To foster a community that prioritizes eco-friendly travel options and actively contributes to environmental preservation.</li>
-            <li >To inspire innovation in sustainable transportation solutions that reduce emissions and promote cleaner air.</li>
-            <li >To enhance accessibility to sustainable travel resources for all demographics, ensuring that everyone can participate in eco-conscious choices.</li>
-          </ul>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="vision">
+                    <h1>Vision</h1>
+                    <ul>
+                        <li>To create a sustainable future where every individual can effortlessly minimize their carbon footprint through informed travel choices.</li>
+                        <li>To foster a community that prioritizes eco-friendly travel options and actively contributes to environmental preservation.</li>
+                        <li>To inspire innovation in sustainable transportation solutions that reduce emissions and promote cleaner air.</li>
+                        <li>To enhance accessibility to sustainable travel resources for all demographics, ensuring that everyone can participate in eco-conscious choices.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mission">
+                    <h1>Mission</h1>
+                    <ul>
+                        <li>To empower individuals with innovative tools and resources that track their daily travel and promote eco-friendly alternatives.</li>
+                        <li>To provide education and awareness on the impacts of travel choices on the environment.</li>
+                        <li>To collaborate with local communities and organizations to promote sustainable travel initiatives.</li>
+                        <li>To drive meaningful change in our collective environmental impact by making sustainable travel accessible and appealing.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        </div>
-        <div class="col-md-6">
-          <div class="mission"></h1>Mission</h1>
-          <ul>
-            <li>To empower individuals with innovative tools and resources that track their daily travel and promote eco-friendly alternatives.</li>
-            <li>To provide education and awareness on the impacts of travel choices on the environment.</li>
-            <li>To collaborate with local communities and organizations to promote sustainable travel initiatives.</li>
-            <li>To drive meaningful change in our collective environmental impact by making sustainable travel accessible and appealing.</li>
-          </ul>
-        </div>
-        </div>
-      </div>
+    </div>
+</div>
+
       
         </div>
       </div>
