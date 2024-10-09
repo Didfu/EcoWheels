@@ -3,7 +3,7 @@
 EcoWheels is a web application project focused on sustainable transportation solutions, built primarily using Python and HTML. This repository contains the source code, project structure, and requirements for building and running the application.
 
 ## Table of Contents
-
+---------------------
 - [About the Project](#about-the-project)
 - [Getting Started](#getting-started)
 - [Features](#features)
