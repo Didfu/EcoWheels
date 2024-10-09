@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 import main.views as mviews
 import authapp.views as aviews
 import adminapp.views as adviews
@@ -23,6 +23,7 @@ import adminapp.views as adviews
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('chat/', include('chat.urls')),
 ]
 
 main = [
@@ -51,4 +52,4 @@ adminapp = [
     path('adminlogin/', adviews.addstore,name='adminlogin'),
 ]
 
-urlpatterns = main + auth + adminapp + urlpatterns
+urlpatterns = main + auth + adminapp + urlpatterns 

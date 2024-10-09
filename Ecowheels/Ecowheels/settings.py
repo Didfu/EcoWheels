@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'authapp',
     'main',
     'adminapp',
+    'channels',
+    'chat',
 ]
 
 MIDDLEWARE = [
@@ -75,6 +77,12 @@ WSGI_APPLICATION = 'Ecowheels.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
 
 DATABASES = {
     'default': {

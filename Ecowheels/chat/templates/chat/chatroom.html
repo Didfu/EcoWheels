@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room</title>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #chat-log {
+            max-height: 300px; /* Set a max height */
+            overflow-y: scroll; /* Enable scrolling */
+            margin-bottom: 10px; /* Space between chat log and input */
+        }
+        #chat-container {
+            padding: 20px; /* Add padding around the container */
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Optional: for jQuery -->
+</head>
+<body>
+    <div class="container" id="chat-container">
+        <h2 class="text-center">Chat Room: {{ room_name }}</h2> <!-- Display the room name -->
+        <div id="chat-log" class="border border-secondary p-2 bg-light">
+            <!-- Chat messages will be dynamically inserted here -->
+        </div>
+        <div class="input-group">
+            <input id="chat-message-input" type="text" class="form-control" placeholder="Type your message...">
+            <div class="input-group-append">
+                <button id="chat-message-submit" class="btn btn-primary">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const roomName = "{{ room_name }}";  // Pass the room name from your Django context
+        const chatSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/chat/' + roomName + '/'
+        );
+
+        // Flag to track WebSocket connection status
+        let isWebSocketOpen = false;
+
+        // Handle WebSocket open event
+        chatSocket.onopen = function(e) {
+            console.log('WebSocket connection established.');
+            isWebSocketOpen = true;  // Update the flag when the connection opens
+        };
+
+        // Handle incoming messages
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const message = data.message;
+            const timestamp = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            // Create a new message element with a timestamp
+            const messageElement = document.createElement('div');
+            messageElement.innerHTML = `<strong>[${timestamp}]</strong> ${message}`;
+
+            // Append the new message to the chat log
+            document.querySelector('#chat-log').appendChild(messageElement);
+
+            // Scroll to the bottom of the chat log
+            const chatLog = document.querySelector('#chat-log');
+            chatLog.scrollTop = chatLog.scrollHeight;
+        };
+
+        // Handle WebSocket close event
+        chatSocket.onclose = function(e) {
+            console.log('WebSocket connection closed.');
+            isWebSocketOpen = false;  // Update the flag when the connection closes
+        };
+
+        // Handle send button click
+        document.querySelector('#chat-message-submit').onclick = function() {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+
+            // Check if the WebSocket is open before sending
+            if (isWebSocketOpen) {
+                chatSocket.send(JSON.stringify({ 'message': message }));
+                messageInputDom.value = '';  // Clear input field
+            } else {
+                console.error('WebSocket is not open. Cannot send message.');
+            }
+        };
+    </script>
+
+    <!-- Include Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
