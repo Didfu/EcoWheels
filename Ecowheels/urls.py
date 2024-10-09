@@ -30,8 +30,9 @@ main = [
     path('home/', mviews.home,name='home'),
     path('redeem/', mviews.redeem,name='redeem'),
     path('leaderboard/', mviews.leaderboard,name='leaderboard'),
-    path('carpooling/', mviews.carpooling,name='carpooling'),
+    path('carpooling-chat/', mviews.carpooling_chat, name='carpooling_chat'),
     path('tips/', mviews.tips,name='tips'),
+
 ]
 
 auth = [
@@ -45,6 +46,12 @@ auth = [
     path('edit_profile/<int:user_id>/', aviews.edit_profile, name='edit_profile'),
     path('avatar_selection/', aviews.avatar_selection, name='avatar_selection'),
     path('update-avatar/', aviews.update_avatar, name='update_avatar'),
+    path('add_friend/<int:user_id>/', aviews.add_friend, name='add_friend'),
+    path('friends_list/', aviews.friends_list, name='friends_list'),
+    path('accept_request/<int:request_id>/', aviews.accept_request, name='accept_request'),
+    path('decline_request/<int:request_id>/', aviews.decline_request, name='decline_request'),
+    path('search/', aviews.search_users, name='search_users'),
+
 ]
 
 adminapp = [
