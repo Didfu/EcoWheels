@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Landing Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  
+  <style>
+    body {
+      scroll-behavior: smooth;
+      margin: 0;
+      height: 100vh;
+      font-family: 'Arial', sans-serif; /* Change font */
+    }
+    .navbar {
+      z-index: 10; /* Ensure navbar is on top */
+      background: rgba(255, 255, 255, 0.7); /* Transparent background */
+      border-bottom: 2px solid rgba(255, 255, 255, 0.5); /* Optional bottom border */
+      position: sticky;
+      top: 0;
+      z-index: 1000; 
+    }
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      font-size: 2.5rem; /* Adjust the brand text size */
+      font-family: 'Poppins', sans-serif; /* Change to a custom font */
+      text-transform: uppercase; /* Uppercase text for the brand */
+      letter-spacing: 2px; /* Increase spacing between letters */
+      color: #2e7d32; /* Change the brand color */
+      font-weight: 600; /* Bold font */
+      transition: color 0.3s ease; /* Smooth transition on hover */
+    }
+    .navbar-brand .logo {
+      height: 50px; /* Adjust height to fit the navbar */
+      margin-right: 10px; /* Space between logo and text */
+    }
+    .navbar-brand:hover {
+      color: #66bb6a; /* Hover effect for brand */
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Add text shadow on hover */
+    }
+    .nav-link {
+      font-family: 'Roboto', sans-serif; /* Change the font family of links */
+      text-transform: capitalize; /* Capitalize first letter of each word */
+      letter-spacing: 1.5px; /* Adjust spacing for a clean look */
+      font-size: 1.2rem; /* Adjust size of links */
+      color: #000; /* Change link text color */
+      transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transition */
+      padding: 10px 20px; /* Add padding to links */
+    }
+    .navbar-toggler-icon {
+      filter: invert(1); /* Invert the color of the toggle icon */
+    }
+    .nav-link:hover {
+      color: #81c784; /* Color change on hover */
+      background-color: rgba(0, 0, 0, 0.1); /* Background change on hover */
+      border-radius: 4px; /* Add border-radius to links */
+    }
+    .section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      height: 100vh; /* Full height for each section */
+      padding: 20px;
+    }
+    #about {
+      background-color: #cbe2f2;
+    }
+    #faq {
+      background-color: #e9ecef;
+      padding: 60px 0; /* Add vertical padding */
+    }
+    .faq-header {
+      font-size: 2rem;
+      margin-bottom: 40px;
+      color: #4caf50; /* Header color */
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    }
+    .accordion-item {
+      border: 1px solid #4caf50; /* Border for accordion items */
+      border-radius: 8px;
+      margin-bottom: 15px; /* Spacing between items */
+      transition: box-shadow 0.3s;
+    }
+    .accordion-button {
+      background-color: #fff; /* Button background */
+      color: #4caf50; /* Button text color */
+      font-weight: bold;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .accordion-button:not(.collapsed) {
+      background-color: #d0ffd4; /* Active state background */
+      color: #2e7d32; /* Active state text color */
+    }
+    .accordion-button:hover {
+      background-color: #f1f1f1; /* Hover effect */
+    }
+    .accordion-body {
+      background-color: #f8f9fa; /* Body background */
+      color: #333; /* Body text color */
+      border-radius: 0 0 8px 8px; /* Rounded corners at the bottom */
+    }
+    .video-container {
+      position: relative;
+      width: 100%;
+      height: 100vh; /* Set height to full viewport */
+      overflow: hidden;
+    }
+    .video-container video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      transform: translate(-50%, -50%);
+    }
+    .vision, .mission {
+      font-weight: bold; /* Bold text */
+      font-size: 1.5rem; /* Increase font size */
+      font-style: italic; /* Italic font */
+      padding: 20px; /* Add padding */
+      border: 2px solid #4caf50; /* Border */
+      border-radius: 8px; /* Rounded corners */
+      background-color: #d0ffd4; /* Background color */
+      margin: 10px; /* Spacing */
+      transition: transform 0.3s; /* Transition for hover effect */
+    }
+    .vision:hover, .mission:hover {
+      transform: scale(1.05); /* Slightly enlarge on hover */
+    }
+    .vision ul, .mission ul {
+      font-size: 1.9rem; /* Increase size of list items */
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Video Section -->
+  <div class="video-container">
+    <video autoplay muted loop>
+      <source src="media/Eco.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+
+    <!-- Navbar Overlay -->
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <img src="media/logo.png" alt="Logo" class="logo"> Eco Wheels
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#faq">FAQ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#login">Login</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    
+  </div>
+
+  <div class="section" id="about">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h2 class="vision">Vision</h2>
+          <ul>
+            <li>To create a sustainable future where every individual can effortlessly minimize their carbon footprint through informed travel choices.</li>
+            <li>To foster a community that prioritizes eco-friendly travel options and actively contributes to environmental preservation.</li>
+            <li>To inspire innovation in sustainable transportation solutions that reduce emissions and promote cleaner air.</li>
+            <li>To enhance accessibility to sustainable travel resources for all demographics, ensuring that everyone can participate in eco-conscious choices.</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <h2 class="mission">Mission</h2>
+          <ul>
+            <li>To empower individuals with innovative tools and resources that track their daily travel and promote eco-friendly alternatives.</li>
+            <li>To provide education and awareness on the impacts of travel choices on the environment.</li>
+            <li>To collaborate with local communities and organizations to promote sustainable travel initiatives.</li>
+            <li>To drive meaningful change in our collective environmental impact by making sustainable travel accessible and appealing.</li>
+          </ul>
+        </div>
+      </div>
+      
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" id="faq">
+    <div class="container">
+      <h2>Frequently Asked Questions</h2>
+      <div class="accordion" id="faqAccordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              What is Eco Wheels?
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              Eco Wheels is a platform dedicated to promoting sustainable travel choices.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              How can I track my carbon footprint?
+            </button>
+          </h2>
+          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              You can use our tools to log your travels and calculate your carbon footprint easily.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              Are there eco-friendly travel options?
+            </button>
+          </h2>
+          <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              Yes, we provide various eco-friendly travel alternatives for your journeys.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingFour">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+              How do I create an account?
+            </button>
+          </h2>
+          <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              You can create an account by clicking the "Login" button and following the prompts.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingFive">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+              Can I access my data from multiple devices?
+            </button>
+          </h2>
+          <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              Yes, your account data is accessible from any device once you log in.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingSix">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+              What should I do if I forget my password?
+            </button>
+          </h2>
+          <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingSix" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">
+              You can reset your password by clicking on the "Forgot Password?" link on the login page.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
