@@ -3,11 +3,10 @@
 {% block title %}HomePage{% endblock %}
 
 {% block extra_head %}
-    <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
     <style>
         #graph-container {
             margin: 20px auto;
-            max-width: 100%;  /* Ensure it matches the graph width */
+            max-width: 100%; /* Ensure it matches the graph width */
             background-color: #fff; /* White background */
             padding: 20px;
             border-radius: 10px;
@@ -26,7 +25,6 @@
             display: flex;
             flex-direction: column; /* Stack heading and graph vertically */
             align-items: center;
-            /* width: 550px; */
         }
 
         .graph-section h3 {
@@ -36,7 +34,7 @@
         }
 
         #bar-chart-section {
-            flex: 1 1 35%; /* Adjust width to accommodate the bar chart */
+            flex: 1 1 30%; /* Adjust width to accommodate the bar chart */
             margin: 5px; /* Reduced space between sections */
         }
 
@@ -48,11 +46,29 @@
 {% endblock %}
 
 {% block content %}
+{% if message %}
+    <div id="no-data-message" style="color: #00563B; text-align: center; margin-top: 20px;">
+        {{ message }}
+    </div>
+{% else %}
+    <div id="graph-container">
+        <div class="graph-section" id="distance-pie-section">
+            <h3>This Week</h3>
+            <h3>Total Distance: {{ total_distance }} km</h3>
+            {{ distance_pie|safe }}
+        </div>
+        <div class="graph-section" id="carbon-footprint-pie-section">
+            <h3>This Week</h3>
+            <h3>Total CO2: {{ total_carbon_footprint }} kg</h3>
+            {{ carbon_footprint_pie|safe }}
+        </div>
+        <div id="bar-chart-section">
+            {{ avg_plot|safe }}
+        </div>
+    </div>
+{% endif %}
+{% endblock %}
 
-
-<div id="row">
-    <div class="form-container">
-        <h2>Welcome to the HomePage</h2>
-            {% csrf_token %}
-            
+{% block extra_scripts %}
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 {% endblock %}

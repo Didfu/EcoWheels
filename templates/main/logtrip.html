@@ -59,6 +59,7 @@
             <button type="submit">Submit Trip</button>
         </form>
     </div>
+
     <div class="trip-table-container">
         <table>
             <thead>
@@ -83,10 +84,10 @@
                     
                     {% with mode=trip.mode_of_transport %}
                     <td>
-                        {% if mode|slice:"-1:" in "1234" %}
+                        {% if mode|last in "1234" %}
                             {{ mode|slice:":-1"|title }}  <!-- Removes last character if it is 1, 2, 3, or 4 -->
                         {% else %}
-                            {{ mode|title }}  <!-- Shows mode as is -->
+                            {{ mode|title }}  <!-- Shows mode as is if there's no number at the end -->
                         {% endif %}
                     </td>
                     {% endwith %}
@@ -94,13 +95,13 @@
                     <td>{{ trip.time_taken }} mins</td>
                     <td>{{ trip.carbon_footprint }}</td>
                     <td>
-                        {% if mode|slice:"-1:" == "1" %}
+                        {% if trip.mode_of_transport|last == "1" %}
                             1 Passenger
-                        {% elif mode|slice:"-1:" == "2" %}
+                        {% elif trip.mode_of_transport|last == "2" %}
                             2 Passengers
-                        {% elif mode|slice:"-1:" == "3" %}
+                        {% elif trip.mode_of_transport|last == "3" %}
                             3 Passengers
-                        {% elif mode|slice:"-1:" == "4" %}
+                        {% elif trip.mode_of_transport|last == "4" %}
                             4 Passengers
                         {% else %}
                             Unknown Number of Passengers
@@ -109,10 +110,10 @@
                 </tr>
                 {% endfor %}
             </tbody>
-            
         </table>
     </div>
-
+    
+    
 </div>
 {% endblock %}
 {% block extra_scripts %}
