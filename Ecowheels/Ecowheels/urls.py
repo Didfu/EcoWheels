@@ -19,12 +19,14 @@ from django.urls import path,include
 import main.views as mviews
 import authapp.views as aviews
 import adminapp.views as adviews
+from chat import views
+
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('chat/', include('chat.urls')),
-
+    path('', mviews.home, name='home'),
 ]
 
 main = [
@@ -50,3 +52,11 @@ adminapp = [
     path('feedback/', adviews.addstore,name='feedback'),
     path('adminlogin/', adviews.addstore,name='adminlogin'),
 ]
+
+chat = [
+    path('chat_room/', views.chat_room, name='chat_room'),
+]
+channels = [
+    path('chat/', include('chat.urls')),
+]
+urlpatterns = main+auth+adminapp+chat+channels+urlpatterns
