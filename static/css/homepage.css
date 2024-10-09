@@ -1,0 +1,219 @@
+/* General Body Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: space-between;
+    background-color: #E5F6DF; /* Light green background */
+}
+
+/* Row Container Styles */
+#row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px; /* Gap between the form and chats */
+    padding: 20px;
+}
+
+/* Form Container Styles */
+.form-container {
+    background-color: #00563B; /* Dark green background */
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    height: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #E5F6DF; /* Light green text */
+    position: relative;
+    flex-shrink: 0; /* Prevent the form container from shrinking */
+}
+
+/* Chats Container Styles */
+.chats {
+    background-color: #fff; /* White background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #00563B; /* Dark green text */
+    font-size: 16px;
+    flex-grow: 1; /* Allow the chats container to take the remaining space */
+    min-width: 0;
+    height: 300px; /* Fixed height */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Scrollable Chat Entries */
+.chat-entries {
+    overflow-y: auto;
+    height: 100%; /* Make it take the full height of the chats container */
+    padding-right: 10px; /* Space for scrollbar */
+}
+
+/* Chat Entry Styles */
+.chat-entry {
+    background-color: #00563B; /* Dark green background */
+    color: #E5F6DF; /* Light green text */
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px; /* Gap between chat entries */
+}
+
+/* Chat Details Container */
+.chat-details {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Chat Details Row */
+.chat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/* Chat Details Column */
+.chat-column {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* Carbon Footprint Container */
+.carbon-footprint {
+    margin-top: 10px;
+}
+
+/* Search Date and Time */
+.search-date-time {
+    font-size: 12px;
+    color: #aaa;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
+/* Form Styles */
+.form-container h2 {
+    text-align: center;
+    color: #E5F6DF; /* Light green text */
+    margin-bottom: 20px;
+}
+
+.form-container label {
+    display: block;
+    margin-bottom: 8px;
+    color: #E5F6DF; /* Light green text */
+    font-weight: bold;
+}
+
+.form-container input,
+.form-container select,
+.form-container button {
+    width: calc(100% - 20px);
+    padding: 8px;
+    margin-bottom: 16px;
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 4px;
+    background-color: #fff; /* White background */
+    transition: all 0.3s ease;
+}
+
+.form-container input:focus,
+.form-container select:focus,
+.form-container button:focus {
+    outline: none;
+    border-color: #00a5b5; /* Teal border on focus */
+    box-shadow: 0 0 5px rgba(0, 165, 181, 0.5);
+}
+
+.form-container input::placeholder,
+.form-container select {
+    color: #aaa; /* Light grey placeholder text */
+}
+
+.form-container button {
+    background-color: #E5F6DF; /* Light green background */
+    color: #00563B; /* Dark green text */
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.form-container button:hover {
+    background-color: #f4f9f4; /* Very light green background */
+    color: #00563B; /* Dark green text */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Autocomplete Results */
+.autocomplete-results {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    width: calc(100% - 20px);
+    background-color: #fff; /* White background */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none; /* Hidden by default */
+}
+
+.autocomplete-results li {
+    padding: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    color: #00563B;
+}
+
+.autocomplete-results li:hover {
+    background-color: #e0f7fa; /* Light cyan background on hover */
+}
+
+/* Eco-Friendly Tips and Graphs Styles */
+#graph-container {
+    margin: 20px auto;
+    max-width: 100%; /* Ensure it matches the graph width */
+    background-color: #fff; /* White background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #00563B; /* Dark green text */
+    display: flex;
+    flex-direction: row; /* Arrange graphs in a row */
+    justify-content: space-between; /* Adjust space distribution */
+    align-items: flex-start;
+    flex-wrap: nowrap; /* Prevent wrapping */
+}
+
+.graph-section {
+    flex: 1 1 25%; /* Adjust the width of each section */
+    margin: 5px; /* Reduced space between sections */
+    display: flex;
+    flex-direction: column; /* Stack heading and graph vertically */
+    align-items: center;
+}
+
+.graph-section h3 {
+    margin: 0 0 5px 0; /* Reduced space below the heading */
+    color: #00563B; /* Dark green text for heading */
+    text-align: center; /* Center-align the headings */
+}
+
+#bar-chart-section {
+    flex: 1 1 30%; /* Adjust width to accommodate the bar chart */
+    margin: 5px; /* Reduced space between sections */
+}
+
+/* Ensure the container of each chart adapts to its content */
+.graph-section, #bar-chart-section {
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}

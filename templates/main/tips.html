@@ -1,0 +1,61 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Tips{% endblock %}
+
+{% block extra_head %}
+<link href = "{% static 'css/tips.css' %}" rel ="stylesheet"></link>
+{% endblock %}
+
+{% block content %}
+<div class="buttons-container" style="text-align: center; margin-top: 20px;">
+    <button id="get-personalized-tips" class="btn btn-primary">Get Personalized Tips</button>
+    <button id="get-personalized-recommendations" class="btn btn-primary">Get Personalized Recommendations</button>
+</div>
+<div id="personalized-container">
+    <h3>Personalized Suggestions</h3>
+    <div id="personalized-content">
+        <!-- The personalized content will be populated here from the backend -->
+    </div>
+</div>
+<section id="eco-tips" class="eco-tips">
+    <h2>General Eco-Friendly Travel Tips</h2>
+    <div class="tips-container">
+        <div class="tip">
+            <h3>Use Public Transport</h3>
+            <img src="{% static 'images/public_trans.jpg' %}" alt="Save Green">
+            <p>Mumbai’s trains, buses, and metros are efficient and reduce individual emissions. Opt for them over personal vehicles whenever possible.</p>
+        </div>
+        <div class="tip">
+            <h3>Switch to Electric Vehicles (EVs)            </h3>
+            <img src="{% static 'images/e_vehicle.jpg' %}" alt="Electric Vehicles">
+            <p>Electric cars, bikes, and scooters have lower emissions than gasoline or diesel vehicles. With growing EV infrastructure, making the switch helps reduce your carbon footprint.</p>
+        </div>
+        <div class="tip">
+            <h3>Walk or Cycle for Short Distances</h3>
+            <img src="{% static 'images/cycle.jpg' %}" alt="Public Transport">
+            <p>Walking or cycling for trips under 3 km can eliminate emissions entirely while improving your health. Mumbai’s developing cycling lanes make this easier.</p>
+        </div>
+        <div class="tip">
+            <h3>Use Fuel-efficient Vehicles</h3>
+            <img src="{% static 'images/fuel.jpg' %}" alt="Carpooling">
+            <p>Keep your vehicle well-maintained to optimize fuel efficiency. If possible, switch to compressed natural gas (CNG), which emits less carbon than petrol or diesel.</p>
+        </div>
+        <div class="tip">
+            <h3>Carpool and Ride-share</h3>
+            <img src="{% static 'images/car_pool.jpg' %}" alt="Eco-Friendly Accommodations">
+            <p>Use carpooling apps or share rides with friends and colleagues. This cuts down on the number of vehicles on the road and reduces emissions per passenger.</p>
+        </div>
+        <div class="tip">
+            <h3>Eco-friendly Navigation</h3>
+            <img src="{% static 'images/eco_friendly.jpg' %}" alt="Travel Light">
+            <p>Use navigation apps to find less congested, fuel-efficient routes. Also, avoid unnecessary idling, as it wastes fuel and increases emissions.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block extra_scripts %}
+<script src="{% static 'js/tips.js' %}"></script>
+    <script>
+        const  url ="{% url 'get_personalized_recommendations' %}"
+    </script>
+{% endblock %}

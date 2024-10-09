@@ -1,0 +1,133 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}HomePage{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
+    <style>
+        #graph-container {
+            margin: 20px auto;
+            max-width: 100%;  /* Ensure it matches the graph width */
+            background-color: #fff; /* White background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: #00563B; /* Dark green text */
+            display: flex;
+            flex-direction: row; /* Arrange graphs in a row */
+            justify-content: space-between; /* Adjust space distribution */
+            align-items: flex-start;
+            flex-wrap: nowrap; /* Prevent wrapping */
+        }
+
+        .graph-section {
+            flex: 1 1 30%; /* Adjust the width of each section */
+            margin: 5px; /* Reduced space between sections */
+            display: flex;
+            flex-direction: column; /* Stack heading and graph vertically */
+            align-items: center;
+            /* width: 550px; */
+        }
+
+        .graph-section h3 {
+            margin: 0 0 5px 0; /* Reduced space below the heading */
+            color: #00563B; /* Dark green text for heading */
+            text-align: center; /* Center-align the headings */
+        }
+
+        #bar-chart-section {
+            flex: 1 1 35%; /* Adjust width to accommodate the bar chart */
+            margin: 5px; /* Reduced space between sections */
+        }
+
+        /* Ensure the container of each chart adapts to its content */
+        .graph-section, #bar-chart-section {
+            box-sizing: border-box; /* Include padding and border in the element's total width and height */
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+{% if message %}
+    <div id="no-data-message" style="color: #00563B; text-align: center; margin-top: 20px;">
+        {{ message }}
+    </div>
+{% else %}
+    <div id="graph-container">
+        <div class="graph-section" id="distance-pie-section">
+            <h3>This Week</h3>
+            <h3>Total Distance {{ w1total_distance }} km</h3>
+            {{ distance_pie|safe }}
+        </div>
+        <div class="graph-section" id="carbon-footprint-pie-section">
+            <h3>This Week</h3>
+            <h3>Total CO2 {{ w1total_co2 }} g</h3>
+            {{ carbon_footprint_pie|safe }}
+        </div>
+        <div id="bar-chart-section">
+            {{ avg_graph|safe }}
+        </div>
+    </div>
+{% endif %}
+
+<div id="row">
+    <div class="form-container">
+        <h2>Plan Your Trip</h2>
+        <form id="trip-form" action="{% url 'process_form' %}" method="post">
+            {% csrf_token %}
+            <label for="source">Source</label>
+            <input type="text" id="source-input" name="source-add" placeholder="Enter source location" required />
+            <ul id="source-results" class="autocomplete-results"></ul>
+            <input type="hidden" id="source-lat" name="source_lat">
+            <input type="hidden" id="source-lng" name="source_lng">
+
+            <label for="destination">Destination</label>
+            <input type="text" id="destination-input" name="destination-add" placeholder="Enter destination location" required />
+            <ul id="destination-results" class="autocomplete-results"></ul>
+            <input type="hidden" id="dest-lat" name="dest_lat">
+            <input type="hidden" id="dest-lng" name="dest_lng">
+
+            <!-- Hidden fields for date and time -->
+            <input type="hidden" id="search-date" name="search_date">
+            <input type="hidden" id="search-time" name="search_time">
+
+            <button type="submit" id="calculate-button">Calculate Carbon Footprint</button>
+        </form>
+    </div>
+    <div class="chats">
+        <div class="chat-entries">
+            {% if chats %}
+                {% for chat in chats %}
+                <div class="chat-entry">
+                    <div class="chat-row">
+                        <div class="chat-column">
+                            <p><strong>Source:</strong> {{ chat.source_address }}</p>
+                            <p><strong>Destination:</strong> {{ chat.destination_address }}</p>
+                            <p><strong>Distance:</strong> {{ chat.distance }} km</p>
+                            <p><strong>Duration:</strong> {{ chat.duration }} mins</p>
+                            <p><strong>Date:</strong> {{ chat.search_date }}</p>
+                            <p><strong>Time:</strong> {{ chat.search_time }}</p>
+                        </div>
+                        <div class="chat-column">
+                            <div class="carbon-footprint">
+                                <p><strong>Carbon Footprint:</strong></p>
+                                {% for mode, footprint in chat.carbon_footprint.items %}
+                                    <p>{{ mode }}: {{ footprint }} g</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No records found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script>const OLAMAPS_API = "{{ OLAMAPS_API }}";
+</script>
+<script src="{% static 'js/homepage.js' %}"></script>
+{% endblock %}

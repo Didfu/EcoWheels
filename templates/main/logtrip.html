@@ -1,0 +1,179 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}Logtrip{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/logtrip.css'%}">
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="form-container">
+        <h2>Log Your Trip</h2>
+        <form id="trip-form" action="{% url 'logtrip' %}" method="post">
+            {% csrf_token %}
+            <label for="source">Source</label>
+            <input type="text" id="source-input" name="source" placeholder="Enter source location" required />
+            <ul id="source-results" class="autocomplete-results"></ul>
+            <input type="hidden" id="source-lat" name="source_lat">
+            <input type="hidden" id="source-lng" name="source_lng">
+
+            <label for="destination">Destination</label>
+            <input type="text" id="destination-input" name="destination" placeholder="Enter destination location" required />
+            <ul id="destination-results" class="autocomplete-results"></ul>
+            <input type="hidden" id="dest-lat" name="dest_lat">
+            <input type="hidden" id="dest-lng" name="dest_lng">
+
+            <label for="mode-of-transport">Mode of Transport</label>
+            <select id="mode-of-transport" name="mode_of_transport" required>
+                <option value="bus">Bus</option>
+                <option value="acbus">AC Bus</option>
+                <option value="train">Train</option>
+                <option value="actrain">AC Train</option>
+                <option value="car1">Car 1 Passenger</option>
+                <option value="car2">Car 2 Passenger</option>
+                <option value="car3">Car 3 Passenger</option>
+                <option value="car4">Car 4 Passenger</option>
+                <option value="bike1">Bike 1 Passenger</option>
+                <option value="bike2">Bike 2 Passenger</option>
+                <option value="rickshaw1">RickShaw 1 Passenger</option>
+                <option value="rickshaw2">RickShaw 2 Passenger</option>
+                <option value="rickshaw3">RickShaw 3 Passenger</option>
+                <option value="scooter1">Scooter 1 Passenger</option>
+                <option value="scooter2">Scooter 2 Passenger</option>
+                <option value="walk">Walk</option>
+                <option value="bicycle">Bicycle</option>
+                
+            </select>
+            <div class="form-row">
+                <label><input type="radio" name="is_electric" value="yes"> Electric</label>
+                <label><input type="radio" name="is_electric" value="no" checked> Not Electric</label>
+            </div>
+            <label for="date">Date</label>
+            <input type="date" id="date" name="date" required />
+            <div class="form-row">
+                <label for="time-taken">Time Taken (minutes)</label>
+                <input type="number" id="time-taken" name="time_taken" step="1" required />
+            </div>
+
+            <button type="submit">Submit Trip</button>
+        </form>
+    </div>
+
+    <div class="trip-table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Log Time</th>
+                    <th>Date</th>
+                    <th>Source</th>
+                    <th>Destination</th>
+                    <th>Mode</th>
+                    <th>Time Taken</th>
+                    <th>Carbon Footprint</th>
+                    <th>Passengers</th>  <!-- Added new column for passengers -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for trip in travellog %}
+                <tr>
+                    <td>{{ trip.log_time }}</td>
+                    <td>{{ trip.date }}</td>
+                    <td>{{ trip.source_address }}</td>
+                    <td>{{ trip.destination_address }}</td>
+                    
+                    {% with mode=trip.mode_of_transport %}
+                    <td>
+                        {% if mode|last in "1234" %}
+                            {{ mode|slice:":-1"|title }}  <!-- Removes last character if it is 1, 2, 3, or 4 -->
+                        {% else %}
+                            {{ mode|title }}  <!-- Shows mode as is if there's no number at the end -->
+                        {% endif %}
+                    </td>
+                    {% endwith %}
+            
+                    <td>{{ trip.time_taken }} mins</td>
+                    <td>{{ trip.carbon_footprint }}</td>
+                    <td>
+                        {% if trip.mode_of_transport|last == "1" %}
+                            1 Passenger
+                        {% elif trip.mode_of_transport|last == "2" %}
+                            2 Passengers
+                        {% elif trip.mode_of_transport|last == "3" %}
+                            3 Passengers
+                        {% elif trip.mode_of_transport|last == "4" %}
+                            4 Passengers
+                        {% else %}
+                            Unknown Number of Passengers
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    
+</div>
+{% endblock %}
+{% block extra_scripts %}
+<script>const OLAMAPS_API = "{{ OLAMAPS_API }}";
+</script>
+<script>
+    
+document.addEventListener('DOMContentLoaded', function () {
+    const sourceAddress = document.getElementById('source-input');
+    const sourceResults = document.getElementById('source-results');
+    const destAddress = document.getElementById('destination-input');
+    const destResults = document.getElementById('destination-results');
+    const dateInput = document.getElementById('date');
+    
+    // Set the max attribute to today's date
+    const today = new Date().toISOString().split('T')[0];
+    dateInput.setAttribute('max', today);
+
+    // Add event listeners for autocomplete as before
+    async function fetchPredictions(input, resultsContainer, setCoordinates) {
+        const searchText = input.value.trim();
+        if (searchText.length > 2) {
+            try {
+                const response = await fetch(`https://api.olamaps.io/places/v1/autocomplete?input=${encodeURIComponent(searchText)}&api_key=${OLAMAPS_API}`);
+                const data = await response.json();
+                const predictions = data.predictions || [];
+                resultsContainer.innerHTML = '';
+                resultsContainer.style.display = predictions.length > 0 ? 'block' : 'none';
+                predictions.forEach((prediction) => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = prediction.description;
+                    listItem.addEventListener('click', () => {
+                        input.value = prediction.description;
+                        setCoordinates(prediction.geometry.location.lat, prediction.geometry.location.lng);
+                        resultsContainer.style.display = 'none';
+                    });
+                    resultsContainer.appendChild(listItem);
+                });
+            } catch (error) {
+                console.error("Error fetching predictions:", error);
+            }
+        } else {
+            resultsContainer.style.display = 'none';
+        }
+    }
+
+    sourceAddress.addEventListener('input', () => {
+        fetchPredictions(sourceAddress, sourceResults, (lat, lng) => {
+            document.getElementById('source-lat').value = lat;
+            document.getElementById('source-lng').value = lng;
+        });
+    });
+
+    destAddress.addEventListener('input', () => {
+        fetchPredictions(destAddress, destResults, (lat, lng) => {
+            document.getElementById('dest-lat').value = lat;
+            document.getElementById('dest-lng').value = lng;
+        });
+    });
+});
+
+</script>
+{% endblock %}
