@@ -359,7 +359,7 @@ def process_form(request):
 def home(request):
     user = request.user
     # Fetch the latest 5 chats
-    chats = Chat.objects.filter(user=user).order_by('-search_date', '-search_time')
+    chats = Chat.objects.filter(user=user).order_by('-search_date', '-search_time')[:5]
 
     today = datetime.now().date()
 

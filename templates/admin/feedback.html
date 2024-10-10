@@ -1,0 +1,48 @@
+{% extends 'admin/base.html' %}
+{% load static %}
+
+{% block title %}Redeem Feedback{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{% static 'css/feedback.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="feedback-container">
+        {% for feedback in feedbacks %}
+            <div class="feedback-card">
+                <div class="avatar-container">
+                    {% if feedback.avatar == '1' %}
+                        <img src="{% static 'avatar/kid.jpg' %}" alt="Avatar 1" class="avatar">
+                    {% elif feedback.avatar == '2' %}
+                        <img src="{% static 'avatar/men.jpg' %}" alt="Avatar 2" class="avatar">
+                    {% elif feedback.avatar == '3' %}
+                        <img src="{% static 'avatar/girl1.jpg' %}" alt="Avatar 3" class="avatar">
+                    {% elif feedback.avatar == '4' %}
+                        <img src="{% static 'avatar/girl2.jpg' %}" alt="Avatar 4" class="avatar">
+                    {% elif feedback.avatar == '5' %}
+                        <img src="{% static 'avatar/girl3.jpg' %}" alt="Avatar 5" class="avatar">
+                    {% elif feedback.avatar == '6' %}
+                        <img src="{% static 'avatar/girl4.jpg' %}" alt="Avatar 6" class="avatar">
+                    {% elif feedback.avatar == '7' %}
+                        <img src="{% static 'avatar/boy1.jpg' %}" alt="Avatar 7" class="avatar">
+                    {% elif feedback.avatar == '8' %}
+                        <img src="{% static 'avatar/boy2.jpg' %}" alt="Avatar 8" class="avatar">
+                    {% elif feedback.avatar == '9' %}
+                        <img src="{% static 'avatar/ninja.jpg' %}" alt="Avatar 9" class="avatar">
+                    {% else %}
+                        <img src="{% static 'avatar/default.jpg' %}" alt="Default Avatar" class="avatar">
+                    {% endif %}
+                </div>
+                <div class="feedback-details">
+                    <div class="feedback-name">{{ feedback.name }}</div>
+                    <div class="feedback-email">{{ feedback.email }}</div>
+                    <div class="feedback-message">{{ feedback.feedback }}</div>
+                    <div class="feedback-time">{{ feedback.submitted_at|date:"D, d M Y H:i" }}</div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No feedback available at the moment.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

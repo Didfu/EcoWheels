@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 import main.views as mviews
 import authapp.views as aviews
 import adminapp.views as adviews
@@ -58,9 +60,16 @@ auth = [
 ]
 
 adminapp = [
-    path('addstore/', adviews.addstore,name='addstore'),
-    path('feedback/', adviews.addstore,name='feedback'),
-    path('adminlogin/', adviews.addstore,name='adminlogin'),
+path('admin_login/', adviews.adminlogin, name='adminlogin'),
+path('view_feedback/', adviews.view_feedback, name='view_feedback'),
+path('add_store/', adviews.add_store, name='addstore'),
+path('admin_logout',adviews.admin_logout,name='adlogout'),
+path('manage-stores/', adviews.manage_stores, name='manage_stores'),
+path('edit-store/<int:store_id>/', adviews.edit_store, name='edit_store'),
+path('delete-store/<int:store_id>/', adviews.delete_store, name='delete_store'),
 ]
 
 urlpatterns = main + auth + adminapp + urlpatterns
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

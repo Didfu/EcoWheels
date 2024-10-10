@@ -7,13 +7,13 @@
 <p>Login to your account to continue</p>
 <form method="post">
     {% csrf_token %}
-    {% if messages %}
+    {% comment %} {% if messages %}
         <div id="message-container" class="alert alert-warning" role="alert" style="color:crimson;">
             {% for message in messages %}
                 {{ message }}
             {% endfor %} 
         </div>
-    {% endif %}
+    {% endif %} {% endcomment %}
     <input type="text" placeholder="Username" id="username" name="username" required>
     <input type="password" id="password" name="password" placeholder="Password" required>
     <div class="links">
